@@ -1,4 +1,4 @@
-import com.shopping.cart.controller.ProductController;
+package com.shopping.cart.controller;
 import com.shopping.cart.model.Product;
 import com.shopping.cart.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
