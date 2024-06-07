@@ -1,11 +1,11 @@
-package com.shopping.cart.controller;
-
+import com.shopping.cart.controller.ProductController;
 import com.shopping.cart.model.Product;
 import com.shopping.cart.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,6 +29,7 @@ public class ProductControllerTest {
 
     @BeforeEach
     public void setup() {
+        MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
     }
 
