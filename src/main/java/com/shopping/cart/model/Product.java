@@ -1,7 +1,15 @@
 package com.shopping.cart.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+/**
+ * The Product class represents a product with its properties such as id, name, price, and imgUrl.
+ * It is an entity class that is mapped to the "product" table in the database.
+ */
+@Setter
+@Getter
 @Entity
 @Table(name = "product")
 public class Product {
@@ -12,8 +20,20 @@ public class Product {
     private double price;
     private String imgUrl;
 
+    /**
+     * Default constructor for the Product class.
+     * Creates a new instance of the Product class.
+     */
     public Product() {}
 
+    /**
+     * Initializes a new instance of the Product class with the given parameters.
+     *
+     * @param id The ID of the product.
+     * @param name The name of the product.
+     * @param price The price of the product.
+     * @param imgUrl The URL of the image of the product.
+     */
     public Product(int id, String name, double price, String imgUrl) {
         this.id = id;
         this.name = name;
@@ -21,35 +41,4 @@ public class Product {
         this.imgUrl = imgUrl;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
 }

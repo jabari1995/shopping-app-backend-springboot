@@ -13,6 +13,9 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+/**
+ * This class provides the security configuration for the application.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -22,6 +25,13 @@ public class SecurityConfig {
     @Value("${app.security.password}")
     private String password;
 
+    /**
+     * Configures the security filter chain for the HTTP requests.
+     *
+     * @param http The HttpSecurity object to configure.
+     * @return The configured SecurityFilterChain.
+     * @throws Exception If an exception occurs during configuration.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -34,6 +44,11 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Returns the UserDetailsService object used for authentication and authorization.
+     *
+     * @return The UserDetailsService object.
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User.withDefaultPasswordEncoder()
