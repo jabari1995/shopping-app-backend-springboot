@@ -39,7 +39,6 @@ public class ProductControllerTest {
 
     @Test
     public void testGetProducts() throws Exception {
-        // Arrange
         List<Product> products = Arrays.asList(
                 new Product(1, "Lockere Crinkle-Bluse mit Knopfleiste", 22.99, "/imgs/crinkleBluse.jpg"),
                 new Product(2, "Baby Overall Bio-Baumwolle", 16.99, "/imgs/baby.jpg"),
@@ -47,10 +46,8 @@ public class ProductControllerTest {
                 new Product(4, "Gartenmöbel Set (7-tlg.Set)", 328.99, "/imgs/gartenmoebel.jpg")
         );
 
-        // Mocking service response
         when(productService.getAllProducts()).thenReturn(products);
 
-        // Act & Assert
         mockMvc.perform(get("/api/products")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
