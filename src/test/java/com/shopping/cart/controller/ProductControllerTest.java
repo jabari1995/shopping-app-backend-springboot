@@ -1,4 +1,5 @@
 package com.shopping.cart.controller;
+
 import com.shopping.cart.model.Product;
 import com.shopping.cart.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,8 +15,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ProductControllerTest {
 
@@ -70,5 +74,63 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$[3].name").value("Gartenmöbel Set (7-tlg.Set)"))
                 .andExpect(jsonPath("$[3].price").value(328.99))
                 .andExpect(jsonPath("$[3].imgUrl").value("/imgs/gartenmoebel.jpg"));
+    }
+
+    @Test
+    public void testAddProduct() throws Exception {
+        Product product = new Product(1, "New Product", 99.99, "/imgs/newProduct.jpg");
+
+        when(productService.saveProduct(any(Product.class))).thenReturn(product);
+
+        mockMvc.perform(post("/api/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(product)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("New Product"))
+                .andExpect(jsonPath("$.price").value(99.99))
+                .andExpect(jsonPath("$.imgUrl").value("/imgs/newProduct.jpg"));
+
+        verify(productService, times(1)).saveProduct(any(Product.class));
+    }
+
+    @Test
+    public void testUpdateProduct() throws Exception {
+        Product updatedProduct = new Product(1, "Updated Product", 199.99, "/imgs/updatedProduct.jpg");
+
+        when(productService.updateProduct(any(Product.class))).thenReturn(updatedProduct);
+
+        mockMvc.perform(put("/api/products/{id}", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(updatedProduct)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Updated Product"))
+                .andExpect(jsonPath("$.price").value(199.99))
+                .andExpect(jsonPath("$.imgUrl").value("/imgs/updatedProduct.jpg"));
+
+        verify(productService, times(1)).updateProduct(any(Product.class));
+    }
+
+    @Test
+    public void testDeleteProduct() throws Exception {
+        when(productService.deleteProduct(1)).thenReturn(true);
+
+        mockMvc.perform(delete("/api/products/{id}", 1)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Product deleted successfully."));
+
+        verify(productService, times(1)).deleteProduct(1);
+    }
+
+    private static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
