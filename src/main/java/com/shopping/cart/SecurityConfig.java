@@ -19,6 +19,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     @Value("${app.security.username}")
     private String username;
 
@@ -35,11 +36,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/products").authenticated()
+                        .requestMatchers("/api/products/**").authenticated() // Authentifizierung für alle /api/products/ Endpunkte
                         .anyRequest().permitAll()
                 )
-                .httpBasic(withDefaults());
+                .httpBasic(withDefaults()); // Verwendung von Basic Auth
 
         return http.build();
     }
